@@ -1,0 +1,82 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test-typescript:
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+
+      - name: Detect Package Manager
+        id: detect-pm
+        uses: ./
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ${{ steps.detect-pm.outputs.node-version-file }}
+          cache: ${{ steps.detect-pm.outputs.package-manager }}
+          cache-dependency-path: ${{ steps.detect-pm.outputs.lockfile }}
+
+      - name: Install Dependencies
+        id: npm-ci
+        env:
+          PM: ${{ steps.detect-pm.outputs.package-manager }}
+        run: $PM ci
+
+      - name: Check Format
+        id: npm-format-check
+        env:
+          PM: ${{ steps.detect-pm.outputs.package-manager }}
+        run: $PM run format:check
+
+      - name: Lint
+        id: npm-lint
+        env:
+          PM: ${{ steps.detect-pm.outputs.package-manager }}
+        run: $PM run lint
+
+      - name: Test
+        id: npm-ci-test
+        run: $PM run ci-test
+        env:
+          GITHUB_ACTIONS: true
+          PM: ${{ steps.detect-pm.outputs.package-manager }}
+
+  test-action:
+    name: GitHub Actions Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+
+      - name: Test Local Action
+        id: detect-pm
+        uses: ./
+        with:
+          working-directory: '.'
+
+      - name: Print Output
+        id: output
+        run: |
+          echo "package-manager=${{ steps.detect-pm.outputs.package-manager }}"
+          echo "node-version-manager=${{ steps.detect-pm.outputs.node-version-manager }}"
+          echo "node-version-file=${{ steps.detect-pm.outputs.node-version-file }}"
+          echo "lockfile=${{ steps.detect-pm.outputs.lockfile }}"

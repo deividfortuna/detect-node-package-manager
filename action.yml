@@ -1,0 +1,47 @@
+name: Detect Node Package Manager
+description:
+  Detects the Node.js package manager (npm, yarn, pnpm) and version manager
+  (nvm, nodenv, n) used by the project based on lock files and version files.
+author: Deivid Fortuna
+
+branding:
+  icon: package
+  color: green
+
+inputs:
+  working-directory:
+    description:
+      The directory to search for package manager lock files. Defaults to the
+      root of the repository.
+    required: false
+    default: '.'
+  supported-package-managers:
+    description:
+      Package managers to detect, separated by commas. Valid values are 'npm',
+      'yarn', and 'pnpm'.
+    required: false
+    default: 'npm,yarn,pnpm'
+  supported-node-version-managers:
+    description:
+      Node version managers to detect, separated by commas. Valid values are
+      'nvm', 'nodenv', and 'n'.
+    required: false
+    default: 'nvm,nodenv,n'
+
+outputs:
+  package-manager:
+    description: The detected package manager for the current project.
+  node-version-manager:
+    description: The detected Node.js version manager for the current project.
+  node-version-file:
+    description:
+      The name of the file that specifies the Node.js version for the project,
+      if found (e.g., .nvmrc, .node-version).
+  lockfile:
+    description:
+      The path to the lock file associated with the detected package manager,
+      relative to the working directory.
+
+runs:
+  using: node24
+  main: dist/index.js

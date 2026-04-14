@@ -1,0 +1,65 @@
+{
+  "name": "detect-node-package-manager",
+  "description": "Detects the Node.js package manager and version manager used by the project based on lock files and version files.",
+  "version": "0.0.0",
+  "author": "Deivid Fortuna",
+  "type": "module",
+  "private": true,
+  "homepage": "https://github.com/deividfortuna/detect-node-package-manager",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deividfortuna/detect-node-package-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/deividfortuna/detect-node-package-manager/issues"
+  },
+  "keywords": [
+    "actions",
+    "node",
+    "package-manager",
+    "npm",
+    "yarn",
+    "pnpm",
+    "nvm",
+    "nodenv"
+  ],
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "bundle": "npm run format:write && npm run package",
+    "ci-test": "npx vitest run",
+    "coverage": "npx make-coverage-badge --output-path ./badges/coverage.svg",
+    "format:write": "npx prettier --write .",
+    "format:check": "npx prettier --check .",
+    "lint": "npx eslint .",
+    "local-action": "npx @github/local-action . src/main.ts .env",
+    "package": "npx ncc build src/index.ts -o dist",
+    "test": "npx vitest run --coverage",
+    "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "3.0.0"
+  },
+  "overrides": {
+    "undici": "7.25.0"
+  },
+  "devDependencies": {
+    "@eslint/compat": "2.0.5",
+    "@eslint/eslintrc": "3.3.5",
+    "@eslint/js": "10.0.1",
+    "@github/local-action": "7.0.1",
+    "@types/node": "25.6.0",
+    "@typescript-eslint/eslint-plugin": "8.58.2",
+    "@vercel/ncc": "0.38.3",
+    "@vitest/coverage-v8": "4.1.4",
+    "eslint": "10.2.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-prettier": "5.5.5",
+    "make-coverage-badge": "1.2.0",
+    "prettier": "3.8.2",
+    "typescript": "6.0.2",
+    "vitest": "4.1.4"
+  }
+}

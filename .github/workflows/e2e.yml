@@ -1,0 +1,69 @@
+name: End-to-End Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test-action:
+    name:
+      GitHub Actions Test (${{ matrix.package-manager.name }} + ${{
+      matrix.node-version-file }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        package-manager:
+          - name: npm
+            lockfile: package-lock.json
+          - name: yarn
+            lockfile: yarn.lock
+          - name: pnpm
+            lockfile: pnpm-lock.yaml
+        node-version-file:
+          - .nvmrc
+          - .node-version
+          - .n-node-version
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Test Bed
+        id: setup-test-bed
+        run: |
+          (rm -rf test-bed || true) && mkdir test-bed && cd test-bed
+          touch package.json
+          touch "${{ matrix.package-manager.lockfile }}"
+          touch "${{ matrix.node-version-file }}"
+
+      - name: Test Local Action
+        id: detect-pm
+        uses: ./
+        with:
+          working-directory: './test-bed'
+
+      - name: Check Outputs
+        if: ${{ !cancelled() }}
+        run: |
+          if [[ "${{ steps.detect-pm.outputs.package-manager }}" != "${{ matrix.package-manager.name }}" ]]; then
+            echo "::error:: Expected package manager to be ${{ matrix.package-manager.name }}, but got '${{ steps.detect-pm.outputs.package-manager }}'"
+            exit 1
+          fi
+          if [[ "${{ steps.detect-pm.outputs.lockfile }}" != "test-bed/${{ matrix.package-manager.lockfile }}" ]]; then
+            echo "::error:: Expected lockfile to be test-bed/${{ matrix.package-manager.lockfile }}, but got '${{ steps.detect-pm.outputs.lockfile }}'"
+            exit 1
+          fi
+          if [[ "${{ steps.detect-pm.outputs.node-version-file }}" != "test-bed/${{ matrix.node-version-file }}" ]]; then
+            echo "::error:: Expected node version file to be test-bed/${{ matrix.node-version-file }}, but got '${{ steps.detect-pm.outputs.node-version-file }}'"
+            exit 1
+          fi

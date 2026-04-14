@@ -1,0 +1,53 @@
+name: Verify Commit Signatures
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  verify-signatures:
+    name: Verify Signed Commits
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Verify every PR commit is signed
+        id: verify
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          commits=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            "repos/$REPO/pulls/$PR_NUMBER/commits" \
+            --paginate \
+            --jq '.[] | [.sha, .commit.verification.verified, .commit.verification.reason] | @tsv')
+
+          unsigned=0
+          while IFS=$'\t' read -r sha verified reason; do
+            if [ "$verified" != "true" ]; then
+              echo "::error::Commit $sha is not verified (reason: $reason)"
+              unsigned=$((unsigned + 1))
+            else
+              echo "OK  $sha"
+            fi
+          done <<< "$commits"
+
+          if [ "$unsigned" -gt 0 ]; then
+            echo "::error::$unsigned commit(s) in this PR are not signed. See https://docs.github.com/authentication/managing-commit-signature-verification"
+            exit 1
+          fi
