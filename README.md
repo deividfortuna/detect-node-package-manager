@@ -32,7 +32,7 @@ steps:
 
   - name: Detect package manager
     id: detect
-    uses: deividfortuna/detect-node-package-manager@v1.0.0
+    uses: deividfortuna/detect-node-package-manager@v1.0.1
 
   - uses: actions/setup-node@v4
     with:
@@ -49,7 +49,7 @@ steps:
 ### Running in a subdirectory
 
 ```yaml
-- uses: deividfortuna/detect-node-package-manager@v1.0.0
+- uses: deividfortuna/detect-node-package-manager@v1.0.1
   id: detect
   with:
     working-directory: ./packages/app
@@ -58,7 +58,7 @@ steps:
 ### Restricting which managers are allowed
 
 ```yaml
-- uses: deividfortuna/detect-node-package-manager@v1.0.0
+- uses: deividfortuna/detect-node-package-manager@v1.0.1
   id: detect
   with:
     supported-package-managers: npm,pnpm
