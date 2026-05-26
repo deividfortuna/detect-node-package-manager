@@ -50,16 +50,16 @@
     "@eslint/eslintrc": "3.3.5",
     "@eslint/js": "10.0.1",
     "@github/local-action": "7.0.1",
-    "@types/node": "25.7.0",
-    "@typescript-eslint/eslint-plugin": "8.59.3",
+    "@types/node": "25.9.1",
+    "@typescript-eslint/eslint-plugin": "8.59.4",
     "@vercel/ncc": "0.38.4",
-    "@vitest/coverage-v8": "4.1.6",
-    "eslint": "10.3.0",
+    "@vitest/coverage-v8": "4.1.7",
+    "eslint": "10.4.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
     "make-coverage-badge": "1.2.0",
     "prettier": "3.8.3",
     "typescript": "6.0.3",
-    "vitest": "4.1.6"
+    "vitest": "4.1.7"
   }
 }
