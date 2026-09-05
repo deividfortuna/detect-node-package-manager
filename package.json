@@ -1,7 +1,7 @@
 {
   "name": "detect-node-package-manager",
   "description": "Detects the Node.js package manager and version manager used by the project based on lock files and version files.",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "author": "Deivid Fortuna",
   "type": "module",
   "private": true,
