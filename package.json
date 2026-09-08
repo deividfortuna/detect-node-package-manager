@@ -46,12 +46,12 @@
     "undici": "7.29.0"
   },
   "devDependencies": {
-    "@eslint/compat": "2.1.0",
-    "@eslint/eslintrc": "3.3.6",
+    "@eslint/compat": "2.1.1",
+    "@eslint/eslintrc": "3.3.7",
     "@eslint/js": "10.0.1",
     "@github/local-action": "7.0.1",
-    "@types/node": "26.4.0",
-    "@typescript-eslint/eslint-plugin": "8.68.0",
+    "@types/node": "26.4.1",
+    "@typescript-eslint/eslint-plugin": "8.69.0",
     "@vercel/ncc": "0.45.0",
     "@vitest/coverage-v8": "4.1.11",
     "eslint": "10.9.1",
