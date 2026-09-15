@@ -56,7 +56,7 @@ export function run(): void {
       core.setOutput('node-version-file', '')
     }
 
-    core.info("Detected package manager: " + packageManager);
+    core.info(`Detected package manager: ${packageManager}`)
     core.setOutput('package-manager', packageManager)
     core.setOutput(
       'lockfile',

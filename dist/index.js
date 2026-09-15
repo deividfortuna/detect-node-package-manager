@@ -40977,7 +40977,7 @@ function notice(message, properties = {}) {
  * @param message info message
  */
 function info(message) {
-    process.stdout.write(message + os.EOL);
+    process.stdout.write(message + external_os_namespaceObject.EOL);
 }
 /**
  * Begin an output group.
@@ -41153,6 +41153,7 @@ function run() {
             setOutput('node-version-manager', '');
             setOutput('node-version-file', '');
         }
+        info(`Detected package manager: ${packageManager}`);
         setOutput('package-manager', packageManager);
         setOutput('lockfile', external_node_path_default().join(workingDirectory, lockfiles[packageManager]));
     }

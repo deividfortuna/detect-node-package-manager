@@ -36,6 +36,18 @@ describe('main.ts', () => {
     expect(core.setOutput).toHaveBeenCalledWith('lockfile', 'package-lock.json')
   })
 
+  it('logs the detected package manager', () => {
+    core.getInput
+      .mockReturnValueOnce('.')
+      .mockReturnValueOnce('npm,yarn,pnpm')
+      .mockReturnValueOnce('nvm,nodenv,n')
+    detectPackageManager.mockReturnValueOnce('pnpm')
+
+    run()
+
+    expect(core.info).toHaveBeenCalledWith('Detected package manager: pnpm')
+  })
+
   it('includes the working directory in the lockfile output', () => {
     core.getInput
       .mockReturnValueOnce('packages/app')
