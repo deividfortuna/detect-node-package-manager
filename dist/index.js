@@ -41153,9 +41153,10 @@ function run() {
             setOutput('node-version-manager', '');
             setOutput('node-version-file', '');
         }
-        info(`Detected package manager: ${packageManager}`);
+        const lockfile = external_node_path_default().join(workingDirectory, lockfiles[packageManager]);
+        info(`Detected package manager: ${packageManager} (${lockfile})`);
         setOutput('package-manager', packageManager);
-        setOutput('lockfile', external_node_path_default().join(workingDirectory, lockfiles[packageManager]));
+        setOutput('lockfile', lockfile);
     }
     catch (error) {
         if (error instanceof Error)

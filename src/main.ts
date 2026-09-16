@@ -56,12 +56,11 @@ export function run(): void {
       core.setOutput('node-version-file', '')
     }
 
-    core.info(`Detected package manager: ${packageManager}`)
+    const lockfile = path.join(workingDirectory, lockfiles[packageManager])
+
+    core.info(`Detected package manager: ${packageManager} (${lockfile})`)
     core.setOutput('package-manager', packageManager)
-    core.setOutput(
-      'lockfile',
-      path.join(workingDirectory, lockfiles[packageManager])
-    )
+    core.setOutput('lockfile', lockfile)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
