@@ -43,7 +43,7 @@
     "@actions/core": "3.0.1"
   },
   "overrides": {
-    "undici": "7.29.0"
+    "undici": "7.29.1"
   },
   "devDependencies": {
     "@eslint/compat": "2.1.1",
